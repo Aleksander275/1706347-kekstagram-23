@@ -1,27 +1,23 @@
 //Функция получения случайного числа.
 
-function getRandom(max) {
-  if (max > 0) {
-    return Math.floor(Math.random() * max);
+function getRandom(min, max) {
+  if (min !== Number(min) || max !== Number(max)) {
+    throw new Error('Неверный тип переменной');
+  }
+  if (min < 0 || max < 0 || min >= max) {
+    throw new Error('Неверно задан диапазон');
+  } else {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
 
-getRandom();
+getRandom(-1,114);
 
 //Функция для проверки максимальной длины строки.
 
-const string = '';
-
-const maxStringLength = 140;
-
-const stringLength = string.length;
-
-function checkingStringLength() {
-  if(stringLength < maxStringLength) {
-    return true;
-  }
-
-  return false;
+function checkingStringLength(stringText,maxStringLength) {
+  return stringText.length <= maxStringLength;
 }
 
-checkingStringLength(stringLength,maxStringLength);
+checkingStringLength('текст строки', 10);
+
