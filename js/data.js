@@ -7,13 +7,14 @@ const MIN_AVATAR_INDEX = 1;
 const MAX_AVATAR_INDEX = 6;
 const MIN_COMMENT_INDEX = 1;
 const MAX_COMMENT_INDEX = 100;
+const MIN_QUALITY_COMMENTS = 1;
+const MAX_QUALITY_COMMENTS = 6;
 const MIN_LIKES_INDEX = 15;
 const MAX_LIKES_INDEX = 200;
 const MIN_PHOTO_INDEX = 1;
 const MAX_PHOTO_INDEX = 25;
 const MIN_USERS_INDEX = 1;
 const MAX_USERS_INDEX = 25;
-const existedIds = new Set();
 
 const COMMENTS = [
   'Всё отлично!',
@@ -47,20 +48,29 @@ const RESOLVE_COMMENTS = COMMENTS.filter((item) => checkingStringLength(item,140
 // Функция для генерации уникального id
 
 const getUniqueId = (min, max) => {
-  const UniqueId = getRandom(min, max);
+  const previousValues = [];
 
-  if (existedIds.has(UniqueId)) {
-    return getUniqueId(min, max);
-  } else {
-    existedIds.add(UniqueId);
-    return UniqueId;
-  }
+  return () => {
+    let currentValue = getRandom(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      throw new Error(`Перебраны все числа из диапазона от ' + ${min} + ' до ' + ${max}`);
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandom(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
 };
+
+const commentUniqueId = getUniqueId(MIN_COMMENT_INDEX, MAX_COMMENT_INDEX);
+const photoIdIndex = getUniqueId(MIN_USERS_INDEX, MAX_USERS_INDEX);
+const getPhotoIndex = getUniqueId(MIN_PHOTO_INDEX, MAX_PHOTO_INDEX);
 
 // Функция для генерации случайного комментатора и комментария
 
 const commentsDescription = () => {
-  const idIndex = getUniqueId(MIN_COMMENT_INDEX,MAX_COMMENT_INDEX);
+  const idIndex = commentUniqueId();
   const avatarIndex = getRandom(MIN_AVATAR_INDEX,MAX_AVATAR_INDEX);
   return {
     id: idIndex,
@@ -73,15 +83,15 @@ const commentsDescription = () => {
 // Функция для генерации описания фотографии
 
 const photosDescriptions = () => {
-  const idIndex = getUniqueId( MIN_USERS_INDEX, MAX_USERS_INDEX);
+  const idIndex = photoIdIndex();
   const likesIndex = getRandom(MIN_LIKES_INDEX,MAX_LIKES_INDEX);
-  const photoIndex = getUniqueId(MIN_PHOTO_INDEX,MAX_PHOTO_INDEX);
+  const photoIndex = getPhotoIndex();
   return {
     id: idIndex,
     url: `photos/${photoIndex}.jpg`,
     discription: `случайное фото №${photoIndex}`,
     likes: likesIndex,
-    comments: commentsDescription(),
+    comments: new Array(getRandom(MIN_QUALITY_COMMENTS, MAX_QUALITY_COMMENTS)).fill().map(() => commentsDescription()),
   };
 };
 
