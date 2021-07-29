@@ -1,4 +1,5 @@
 import {simulatorPublication} from './data.js';
+import {createBigPicture} from './big-picture.js';
 
 const PICTURE_LINK = document.querySelector('#picture')
   .content
@@ -17,6 +18,11 @@ const getMiniature = function (array) {
     miniature.querySelector('.picture__likes').textContent =  array[i].likes;
     miniature.querySelector('.picture__comments').textContent =  array[i].comments.length;
 
+    miniature.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      createBigPicture(array[i]);
+    });
+
     FRAGMENT_PICTURES.appendChild(miniature);
   }
 
@@ -27,4 +33,4 @@ const getMiniature = function (array) {
 
 getMiniature(simulatorPublication);
 
-export {PICTURE_CONTAINER};
+

@@ -6,9 +6,9 @@ const QUANTITY_PHOTOS_DESCRIPTIONS = 25;
 const MIN_AVATAR_INDEX = 1;
 const MAX_AVATAR_INDEX = 6;
 const MIN_COMMENT_INDEX = 1;
-const MAX_COMMENT_INDEX = 100;
-const MIN_QUALITY_COMMENTS = 1;
-const MAX_QUALITY_COMMENTS = 6;
+const MAX_COMMENT_INDEX = 280;
+const MIN_QUALITY_COMMENTS = 3;
+const MAX_QUALITY_COMMENTS = 11;
 const MIN_LIKES_INDEX = 15;
 const MAX_LIKES_INDEX = 200;
 const MIN_PHOTO_INDEX = 1;
@@ -74,7 +74,7 @@ const commentsDescription = () => {
   const avatarIndex = getRandom(MIN_AVATAR_INDEX,MAX_AVATAR_INDEX);
   return {
     id: idIndex,
-    avatar: `img/avatar${avatarIndex}.svg`,
+    avatar: `img/avatar-${avatarIndex}.svg`,
     message: randomElementArray(RESOLVE_COMMENTS),
     name: randomElementArray(NAMES),
   };

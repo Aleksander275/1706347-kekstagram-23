@@ -16,6 +16,6 @@ function checkingStringLength(stringText,maxStringLength) {
   return stringText.length <= maxStringLength;
 }
 
-//checkingStringLength();
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-export {getRandom, checkingStringLength};
+export {getRandom, checkingStringLength, isEscEvent};
